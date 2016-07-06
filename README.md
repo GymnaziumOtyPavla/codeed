@@ -1,2 +1,3 @@
-# codeed
+# CodeED
+
 Demo sources for CodeED camp
