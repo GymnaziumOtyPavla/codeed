@@ -13,28 +13,26 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-public class Demo extends Application {
+public class Abakus extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Abakus");
 
-        int polomer = 20;
-        int aktualniX = polomer;
-        int aktualniY = polomer;
+        int radius = 20;
         
-        int pocetRadku = 8;
-        int pocetSloupcu = 17;
+        int rows = 8;
+        int cols = 17;
 
         Pane pane = new Pane();
 
-        for (int i = 0; i < pocetRadku; i++) {
+        for (int i = 0; i < rows; i++) {
 
-            for (int j = 0; j < pocetSloupcu; j++) {
+            for (int j = 0; j < cols; j++) {
                 final Circle circle = new Circle();
-                circle.setCenterX(aktualniX);
-                circle.setCenterY(aktualniY);
-                circle.setRadius(polomer);
+                circle.setCenterX(2 * j * radius + radius);
+                circle.setCenterY(2 * i * radius + radius);
+                circle.setRadius(radius);
                 
                 circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent mouseEvent) {
@@ -42,28 +40,21 @@ public class Demo extends Application {
                     }
                 });
                 
-                if (j < 5 ) {
-                    circle.setFill(Color.SADDLEBROWN);
-                } else if (j > 5  && j < 9) {
+                if (j < cols / 2) {
                     circle.setFill(Color.BLUE);
-                } else { 
-                    circle.setFill(Color.YELLOW);
+                } else {
+                    circle.setFill(Color.RED);
                 }
                 pane.getChildren().add(circle);
-
-                aktualniX += 2 * polomer;
             }
             
             Line line = new Line();
             line.setStartX(0);
-            line.setStartY(aktualniY);
+            line.setStartY(2 * i * radius + radius);
             line.setEndX(10000);
-            line.setEndY(aktualniY);
+            line.setEndY(2 * i * radius + radius);
             line.setStroke(Color.BLACK);
             pane.getChildren().add(line);
-            
-            aktualniX = polomer;
-            aktualniY += 2 * polomer;
         }
         
         
