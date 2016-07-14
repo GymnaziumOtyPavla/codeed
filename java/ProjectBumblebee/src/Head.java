@@ -9,15 +9,21 @@ import javafx.scene.shape.Line;
  * @author OndrejTkaczyszyn
  */
 public class Head {
+    
+    
     private Point pos = new Point();
-    private Graphics graphics = new Graphics();
-    private Color usedColor;
     private Vector dir = new Vector();
+    private Graphics graphics;
+    private Color usedColor;
+
     public void home() {
         this.pos.setX(graphics.getWidth()/2);
         this.pos.setY(graphics.getHeight()/2);
     }
-    
+    public Head(Graphics g){
+        home();
+        graphics = g;
+    }
     public void color(double r, double g, double b) {
        this.usedColor = Color.color(r,g,b); 
     }
