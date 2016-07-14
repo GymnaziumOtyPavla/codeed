@@ -17,9 +17,9 @@ public class Interpreter {
     
     private Head head;
     
-    public Interpreter()
+    public Interpreter(Graphics g)
     {
-        head = new Head();
+        head = new Head(g);
     }
     
     public void runScript(String fn) {
