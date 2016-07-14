@@ -31,3 +31,4 @@
 # Java
 *.class
 
+/java/ProjectBumblebee/nbproject/private/
