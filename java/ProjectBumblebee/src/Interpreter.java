@@ -1,3 +1,9 @@
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  * @author thomasfurst99
  */
@@ -14,6 +20,22 @@ public class Interpreter {
     public Interpreter()
     {
         head = new Head();
+    }
+    
+    public void runScript(String fn) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fn));
+            
+            String line;
+            while ((line = br.readLine()) != null) {
+                process(line);
+            }
+            
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
     public void process(String line) {
