@@ -24,6 +24,11 @@ public class Head {
         color(0, 0, 0);
     }
     
+    public void set(double x, double y) {
+        pos.setX(x);
+        pos.setY(y);
+    }
+    
     public void home() {
         pos.setX(graphics.getWidth()/2);
         pos.setY(graphics.getHeight()/2);

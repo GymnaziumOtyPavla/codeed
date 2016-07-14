@@ -45,6 +45,7 @@ public class Interpreter {
     public void runImage(String fn) {
         final File file = new File(fn);
         final BufferedImage image;
+        head.set(0, 0);
         try {
             image = ImageIO.read(file);
 
