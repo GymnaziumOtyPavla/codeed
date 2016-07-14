@@ -32,3 +32,5 @@
 *.class
 
 /java/ProjectBumblebee/nbproject/private/
+/java/ProjectBumblebee/build/
+/java/ProjectBumblebee/dist/

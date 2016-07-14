@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,7 +15,42 @@ public class Graphics extends Application {
     
     public static Graphics instance = null;
     
+    /**
+     * Set this variable to open your script
+     */
+    private static String fn;
+    
+    private static double initWidth;
+    private static double initHeight;
+    
     private Pane pane;
+        
+    public static void main(String... args) {
+        
+        if (args.length == 2) fn = args[1];
+        else fn = "spiral.ds.txt";
+        
+        if (args.length == 3 || args.length == 4) 
+        {
+            try {
+                initWidth = Double.parseDouble(args[1]);
+                initHeight = Double.parseDouble(args[2]);
+            } catch (NumberFormatException ex) {
+                initWidth = 400;
+                initHeight = 400;
+            }
+            
+            if (args.length == 4) fn = args[3];
+            else fn = "spiral.ds.txt";
+        }
+        else
+        {
+            initWidth = 400;
+            initHeight = 400;
+        }
+        
+        launch(args);
+    }
     
     public Graphics() {
         instance = this;
@@ -33,8 +69,7 @@ public class Graphics extends Application {
     }
     
     private double _getWidth() {
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        return bounds.getWidth();
+        return initWidth;
     }
     
     public static double getHeight() {
@@ -42,16 +77,20 @@ public class Graphics extends Application {
     }
     
     private double _getHeight() {
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        return bounds.getHeight();
+        return initHeight;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Turtle graphics");
+        instance = this;        
         pane = new Pane();
         
-        stage.setScene(new Scene(pane, 400, 400));
+        Interpreter i = new Interpreter(Graphics.instance);
+        i.runScript(fn);
+        
+        
+        stage.setTitle(fn);
+        stage.setScene(new Scene(pane, initWidth, initHeight));
         stage.show();
     }
     
