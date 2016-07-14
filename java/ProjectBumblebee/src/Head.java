@@ -14,44 +14,56 @@ public class Head {
     private Point pos = new Point();
     private Vector dir = new Vector();
     private Graphics graphics;
-    private Color usedColor;
+    private Color color;
 
-    public void home() {
-        this.pos.setX(graphics.getWidth()/2);
-        this.pos.setY(graphics.getHeight()/2);
-    }
     public Head(Graphics g){
-        home();
+        System.out.println("Creating head");
+        
+        dir = new Vector(1, 0);
         graphics = g;
+        
+        home();
+        color(0, 0, 0);
     }
+    
+    public void home() {
+        System.out.println("Home");
+        pos.setX(graphics.getWidth()/2);
+        pos.setY(graphics.getHeight()/2);
+    }
+    
     public void color(double r, double g, double b) {
-       this.usedColor = Color.color(r,g,b); 
+        System.out.println("color");
+        color = Color.color(r,g,b); 
     }
     
     public void turnLeft(double deg) {
-       this.dir.rotate(-deg);
+        System.out.println("Turn left");
+        dir.rotate(-deg);
     }
     
     public void turnRight(double deg) {
-       this.dir.rotate(deg); 
+        System.out.println("Turn right");
+        dir.rotate(deg); 
     }
     
     public void forward(double len) {
-        double eX,eY,oriX,oriY;
-        int intLen;
-        oriX = this.pos.getX();
-        oriY = this.pos.getY();
-        intLen = (int)len;
-        Vector rotatedVector = dir.mult(intLen);
-        eX = oriX + rotatedVector.getX();
-        eY = oriY + rotatedVector.getY();
+        System.out.println("Forward");
+        Vector path = dir.mult(len);
+        
+        // We have result!
+        Vector res = new Vector(pos.getX(), pos.getY()).add(path);
+        
         Line line = new Line();
         line.setStartX(this.pos.getX());
         line.setStartY(this.pos.getY());
-        line.setEndX(eX);
-        line.setEndY(eY);
-        this.pos.setX(eX);
-        this.pos.setY(eY);
+        line.setEndX(res.getX());
+        line.setEndY(res.getY());
+        line.setStroke(color);
+        
+        pos.setX(res.getX());
+        pos.setY(res.getY());
+        
         graphics.addNode(line);
     }
 }
