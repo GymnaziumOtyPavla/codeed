@@ -1,4 +1,3 @@
-import com.sun.xml.internal.messaging.saaj.util.transform.EfficientStreamingTransformer;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
