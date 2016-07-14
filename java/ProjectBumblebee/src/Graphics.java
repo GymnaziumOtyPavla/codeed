@@ -1,11 +1,16 @@
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.geometry.Rectangle2D;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -14,6 +19,10 @@ import javafx.stage.Stage;
 public class Graphics extends Application {
     
     public static Graphics instance = null;
+    
+    private static final double delay = 500;
+    
+    private double currentTime = -1;
     
     /**
      * Set this variable to open your script
@@ -24,11 +33,12 @@ public class Graphics extends Application {
     private static double initHeight;
     
     private Pane pane;
-        
+            
     public static void main(String... args) {
         
         if (args.length == 2) fn = args[1];
-        else fn = "DrawScripts/butt.ds";
+        //else fn = "DrawScripts/rect.ds";
+        else fn = "demo.jpg";
         
         if (args.length == 3 || args.length == 4) 
         {
@@ -41,7 +51,7 @@ public class Graphics extends Application {
             }
             
             if (args.length == 4) fn = args[3];
-            else fn = "DrawScripts/butt.ds";
+            else fn = "DrawScripts/rect.ds";
         }
         else
         {
@@ -61,6 +71,7 @@ public class Graphics extends Application {
     }
     
     private void _addNode(Node node) {
+        
         pane.getChildren().add(node);
     }
    
@@ -79,15 +90,17 @@ public class Graphics extends Application {
     private double _getHeight() {
         return initHeight;
     }
-
+    
     @Override
     public void start(Stage stage) throws Exception {
-        instance = this;        
+        instance = this;  
+        
         pane = new Pane();
         
-        Interpreter i = new Interpreter(Graphics.instance);
-        i.runScript(fn);
         
+        
+        Interpreter i = new Interpreter(Graphics.instance);
+        i.runImage(fn);
         
         stage.setTitle(fn);
         stage.setScene(new Scene(pane, initWidth, initHeight));

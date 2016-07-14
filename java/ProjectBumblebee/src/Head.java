@@ -16,9 +16,7 @@ public class Head {
     private Graphics graphics;
     private Color color;
 
-    public Head(Graphics g){
-        System.out.println("Creating head");
-        
+    public Head(Graphics g){        
         dir = new Vector(1, 0);
         graphics = g;
         
@@ -27,28 +25,23 @@ public class Head {
     }
     
     public void home() {
-        System.out.println("Home");
         pos.setX(graphics.getWidth()/2);
         pos.setY(graphics.getHeight()/2);
     }
     
     public void color(double r, double g, double b) {
-        System.out.println("color");
         color = Color.color(r,g,b); 
     }
     
     public void turnLeft(double deg) {
-        System.out.println("Turn left");
         dir.rotate(-deg);
     }
     
     public void turnRight(double deg) {
-        System.out.println("Turn right");
         dir.rotate(deg); 
     }
     
     public void forward(double len) {
-        System.out.println("Forward");
         Vector path = dir.mult(len);
         
         // We have result!
