@@ -12,18 +12,36 @@ import javafx.stage.Stage;
  */
 public class Graphics extends Application {
     
+    public static Graphics instance = null;
+    
     private Pane pane;
     
-    public void addNode(Node node) {
-        pane.getChildren().add(node);
+    public Graphics() {
+        instance = this;
     }
     
-    public double getWidth() {
+    public static void addNode(Node node) {
+        instance._addNode(node);
+    }
+    
+    private void _addNode(Node node) {
+        pane.getChildren().add(node);
+    }
+   
+    public static double getWidth() {
+        return instance._getWidth();
+    }
+    
+    private double _getWidth() {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         return bounds.getWidth();
     }
     
-    public double getHeight() {
+    public static double getHeight() {
+        return instance._getHeight();
+    }
+    
+    private double _getHeight() {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         return bounds.getHeight();
     }
