@@ -28,7 +28,7 @@ public class Graphics extends Application {
     public static void main(String... args) {
         
         if (args.length == 2) fn = args[1];
-        else fn = "spiral.ds.txt";
+        else fn = "DrawScripts/butt.ds";
         
         if (args.length == 3 || args.length == 4) 
         {
@@ -41,7 +41,7 @@ public class Graphics extends Application {
             }
             
             if (args.length == 4) fn = args[3];
-            else fn = "spiral.ds.txt";
+            else fn = "DrawScripts/butt.ds";
         }
         else
         {
