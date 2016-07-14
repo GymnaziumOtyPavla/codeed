@@ -6,7 +6,7 @@ import javafx.scene.shape.Line;
 
 /**
  *
- * @author thomasfurst
+ * @author OndrejTkaczyszyn
  */
 public class Head {
     private Point pos = new Point();
