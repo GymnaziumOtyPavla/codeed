@@ -23,11 +23,11 @@ public class Head {
     }
     
     public void turnLeft(double deg) {
-       this.dir.Rotate(-deg);
+       this.dir.rotate(-deg);
     }
     
     public void turnRight(double deg) {
-       this.dir.Rotate(deg); 
+       this.dir.rotate(deg); 
     }
     
     public void forward(double len) {
@@ -40,12 +40,12 @@ public class Head {
         eX = oriX + rotatedVector.getX();
         eY = oriY + rotatedVector.getY();
         Line line = new Line();
-        line.setStartX();
-        line.setStartY(this.pos.getX());
+        line.setStartX(this.pos.getX());
+        line.setStartY(this.pos.getY());
         line.setEndX(eX);
         line.setEndY(eY);
         this.pos.setX(eX);
         this.pos.setY(eY);
-        graphics.addObject(line);
+        graphics.addNode(line);
     }
 }
