@@ -1,3 +1,4 @@
+import java.io.File;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.geometry.Rectangle2D;
@@ -26,10 +27,11 @@ public class Graphics extends Application {
     private Pane pane;
         
     public static void main(String... args) {
-        
+        String fndef = "DrawScripts/test.ds";
         if (args.length == 2) fn = args[1];
-        else fn = "DrawScripts/butt.ds";
-        
+        else fn = fndef;
+        final File folder = new File(System.getProperty("user.dir"));
+        Debug.printFilesInFolder(folder);
         if (args.length == 3 || args.length == 4) 
         {
             try {
@@ -41,7 +43,7 @@ public class Graphics extends Application {
             }
             
             if (args.length == 4) fn = args[3];
-            else fn = "DrawScripts/butt.ds";
+            else fn = fndef;
         }
         else
         {
@@ -85,8 +87,8 @@ public class Graphics extends Application {
         instance = this;        
         pane = new Pane();
         
-        Interpreter i = new Interpreter(Graphics.instance);
-        i.runScript(fn);
+        Interpreter i = new Interpreter(Graphics.instance,fn);
+        i.runScript();
         
         
         stage.setTitle(fn);

@@ -15,6 +15,7 @@ public class Head {
     private Vector dir = new Vector();
     private Graphics graphics;
     private Color color;
+    private boolean penPos = true;
 
     public Head(Graphics g){
         System.out.println("Creating head");
@@ -47,23 +48,48 @@ public class Head {
         dir.rotate(deg); 
     }
     
+    public void moveTo(double x, double y,boolean resetAngle){
+        this.pos.setX(x);
+        this.pos.setY(y);
+        if(resetAngle){
+            this.dir = new Vector(0,1);
+        }
+    }
+     public void moveTo(double x, double y){
+        this.pos.setX(x);
+        this.pos.setY(y);
+            this.dir = new Vector(0,1);
+    }
+    
+    public void penUp(){
+        this.penPos = false;
+    }
+    public void penDown(){
+        this.penPos = true;
+    }
+    public boolean penIsDown(){
+        return this.penPos;
+    }
+    
     public void forward(double len) {
         System.out.println("Forward");
         Vector path = dir.mult(len);
         
         // We have result!
         Vector res = new Vector(pos.getX(), pos.getY()).add(path);
-        
+        if(penPos){
         Line line = new Line();
         line.setStartX(this.pos.getX());
         line.setStartY(this.pos.getY());
         line.setEndX(res.getX());
         line.setEndY(res.getY());
         line.setStroke(color);
-        
-        pos.setX(res.getX());
-        pos.setY(res.getY());
+
         
         graphics.addNode(line);
+        }
+                
+        pos.setX(res.getX());
+        pos.setY(res.getY());
     }
 }
