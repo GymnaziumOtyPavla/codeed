@@ -16,7 +16,7 @@ public class Head {
     private Graphics graphics;
     private Color color;
     private boolean penPos = true;
-
+    private double penWidth = 1;
     public Head(Graphics g){
         System.out.println("Creating head");
         
@@ -37,6 +37,9 @@ public class Head {
     }
     public void resetDir(){
         this.dir = new Vector(0,1);
+    }
+    public void setWidth(double width){
+        this.penWidth = width;
     }
     public void color(double r, double g, double b) {
         System.out.println("color");
@@ -81,6 +84,7 @@ public class Head {
         line.setEndX(res.getX());
         line.setEndY(res.getY());
         line.setStroke(color);
+        line.setStrokeWidth(penWidth);
 
         
         graphics.addNode(line);

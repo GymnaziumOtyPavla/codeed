@@ -17,13 +17,14 @@ import java.util.regex.Pattern;
 
 /**
  * @author thomasfurst99
- * TODO: přidat lineWidth, RANDOM, RESET
+ * TODO: přidat lineWidth, RANDOM
  * TODO: FOR - rozpoznat, jestli od vyššího k nižšímu či naopak a podle toho přičítat či odčítat
  */
 public class Interpreter {
     
     private static final String HOME = "HOME";
     private static final String COLOR = "COLOR";
+    private static final String WIDTH = "WIDTH";
     private static final String TURNLEFT = "TURNLEFT";
     private static final String TURNRIGHT = "TURNRIGHT";
     private static final String FORWARD = "FORWARD";
@@ -83,6 +84,9 @@ public class Interpreter {
             case COLOR:
                 processColor(split);
                 break;
+            case WIDTH:
+                processWidth(split);
+            break;
             case TURNLEFT:
                 processTurn(split, false);
                 break;
@@ -141,7 +145,7 @@ public class Interpreter {
                         //System.out.println(tmp+" FOR loop iterations:");
                         subline = lineMap.get(lineCounter);
                         String[] subsplit = subline.split("\\s+");
-                        while(!((lineCounter >=lineMap.size())||((subsplit[0] == "NEXT" && subsplit[1]==ctrName)))){//projed celej blok zadanej FOR .. NEXT  nebo dokud nedojdes na konec                  processLine(subline);
+                        innerloop: while(!((lineCounter >=lineMap.size())||((subsplit[0].equals("NEXT") && subsplit[1].equals(ctrName))))){//projed celej blok zadanej FOR .. NEXT  nebo dokud nedojdes na konec                  processLine(subline);
 
                       Debug.printArr(subsplit);
                      String toExecute = subline.replace(ctrName,Integer.toString(tmp));//nahraď všechny instance specifikovaný proměnný tmpem
@@ -155,11 +159,9 @@ public class Interpreter {
                         subline = lineMap.get(lineCounter);
                         subsplit = subline.split("\\s+");
                     }
-                     System.out.println("FOR BLOCK ENDED");
-                     if((subsplit[0] == "NEXT" && subsplit[1]==ctrName)){break;}else{
-                     lineCounter = currentLine+1;}
+                     //System.out.println("FOR BLOCK ENDED");
                      
-                    }
+                     lineCounter = currentLine+1;}
                     currentLine = continueFrom;//skoč tam, kdes byl
                 }else{
                     System.out.println("Invalid for loop syntax");
@@ -194,6 +196,10 @@ public class Interpreter {
         }
 }
     
+    public void processWidth(String[] args){
+        double newWidth = Double.parseDouble(args[1]);
+        head.setWidth(newWidth);
+    }
     private void processColor(String... args) {
         if (args.length < 4) return;
         
