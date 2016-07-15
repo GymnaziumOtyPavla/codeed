@@ -20,7 +20,7 @@ public class Head {
     public Head(Graphics g){
         System.out.println("Creating head");
         
-        dir = new Vector(1, 0);
+        this.initVector();
         graphics = g;
         
         home();
@@ -32,7 +32,12 @@ public class Head {
         pos.setX(graphics.getWidth()/2);
         pos.setY(graphics.getHeight()/2);
     }
-    
+    private void initVector(){
+        this.dir = new Vector(0,1);
+    }
+    public void resetDir(){
+        this.dir = new Vector(0,1);
+    }
     public void color(double r, double g, double b) {
         System.out.println("color");
         color = Color.color(r,g,b); 
@@ -47,18 +52,10 @@ public class Head {
         System.out.println("Turn right");
         dir.rotate(deg); 
     }
-    
-    public void moveTo(double x, double y,boolean resetAngle){
-        this.pos.setX(x);
-        this.pos.setY(y);
-        if(resetAngle){
-            this.dir = new Vector(0,1);
-        }
-    }
      public void moveTo(double x, double y){
         this.pos.setX(x);
         this.pos.setY(y);
-            this.dir = new Vector(0,1);
+        initVector();    
     }
     
     public void penUp(){

@@ -9,6 +9,8 @@ import static java.lang.Integer.parseInt;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +32,7 @@ public class Interpreter {
     private static final String MOVETO = "MOVETO";
     private static final String REPEAT = "REPEAT";
     private static final String BREAK = "BREAK";
+    private static final String RESETROTATE = "RESET";
     private static final String FOR = "FOR";
     private static final String TO = "TO";
     private static final String NEXT = "NEXT";
@@ -69,8 +72,8 @@ public class Interpreter {
     }
     
     public void processLine(String line) throws IOException {
-        String[] split = line.split(" ");
-        System.out.println("Processing a line");
+        String[] split = line.split("\\s+");
+        //System.out.println("Processing a line");
         if (split.length == 0) return;
         
         switch (split[0]) {
@@ -98,8 +101,15 @@ public class Interpreter {
             case MOVETO:
                 processMoveToCoords(split);
                 break;
+            case RESETROTATE:
+                    head.resetDir();
+            break;
             case FOR:
-                System.out.println("Processing a for loop - beware!");
+                processForLoop(split);
+            break;
+        }
+    }
+    public void processForLoop(String[] args){
                 /*String pattern = "/FOR\\s(\\w*)\\s=\\s(\\d*)\\sTO\\s(\\d*)/g";
                  *Pattern r = Pattern.compile(pattern);
                  *Matcher m = r.matcher(line);
@@ -107,27 +117,28 @@ public class Interpreter {
                  *String ctrName = m.group(0);//jméno proměnné ve Scriptu, která se nahradí tmp
                  *int ctrFrom = parseInt(m.group(1));
                  *int ctrTo = parseInt(m.group(2));*/
-                String[] forSplit;
-                forSplit = line.split(" ");
-                System.out.println("FOR LOOP BEGIN");
-                Debug.printArr(forSplit);
-                    if(forSplit.length>5){   
-                 String ctrName = forSplit[1];//jméno proměnné ve Scriptu, která se nahradí tmp
-                 int ctrFrom = parseInt(forSplit[3]);
-                 int ctrTo = parseInt(forSplit[5]);
+                //System.out.println("FOR LOOP BEGIN");
+                Debug.printArr(args);
+                    if(args.length>5){   
+                 String ctrName = args[1];//jméno proměnné ve Scriptu, která se nahradí tmp
+                 int ctrFrom = parseInt(args[3]);
+                 int ctrTo = parseInt(args[5]);
                  int step = 1;
-                 if(forSplit.length>6){
-                     if(forSplit[6] =="STEPSOF"){
-                         step = parseInt(forSplit[7]);
+                 if(args.length>7){
+                     //System.out.println("Watch out, we have some long args over here");
+                     if(args[6].contains("STEPSOF")){
+                          //System.out.println("Watch out, we have some long steps over here");
+                         step = parseInt(args[7]);
+                         System.out.println("jumping by steps of" + step);
                      }
                  }
                  int continueFrom = currentLine; //odkud to znovu začne při čtení zbytku souboru
-                    System.out.println("Varname is " + ctrName +",range from "+ctrFrom+" to " + ctrTo);
+                    System.out.println("Varname is " + ctrName +", range from "+ctrFrom+" to " + ctrTo + ", moving by steps of " + step);
                     int lineCounter = currentLine + 1;
                     String subline;
                     subline = lineMap.get(lineCounter);
                     for(int tmp = ctrFrom;tmp<ctrTo;tmp+=step){//tmp jde od nejmenší hodnoty k největší
-                        System.out.println(tmp+" FOR loop iterations:");
+                        //System.out.println(tmp+" FOR loop iterations:");
                         subline = lineMap.get(lineCounter);
                         String[] subsplit = subline.split("\\s+");
                         while(!((lineCounter >=lineMap.size())||((subsplit[0] == "NEXT" && subsplit[1]==ctrName)))){//projed celej blok zadanej FOR .. NEXT  nebo dokud nedojdes na konec                  processLine(subline);
@@ -135,20 +146,24 @@ public class Interpreter {
                       Debug.printArr(subsplit);
                      String toExecute = subline.replace(ctrName,Integer.toString(tmp));//nahraď všechny instance specifikovaný proměnný tmpem
                       System.out.println(toExecute);
-                       processLine(toExecute);
+                            try {
+                                processLine(toExecute);
+                            } catch (IOException ex) {
+                                System.out.println("Incorrect variable name in FOR loop");
+                            }
                         lineCounter++;
                         subline = lineMap.get(lineCounter);
                         subsplit = subline.split("\\s+");
                     }
                      System.out.println("FOR BLOCK ENDED");
-                     lineCounter = currentLine+1;//skoč tam, kdes byl
+                     if((subsplit[0] == "NEXT" && subsplit[1]==ctrName)){break;}else{
+                     lineCounter = currentLine+1;}
+                     
                     }
-                    currentLine = continueFrom;
+                    currentLine = continueFrom;//skoč tam, kdes byl
                 }else{
                     System.out.println("Invalid for loop syntax");
                 }
-            break;
-        }
     }
         public void runImage(String fn) {
         final File file = new File(fn);
@@ -199,16 +214,7 @@ public class Interpreter {
         double x,y;
         x = Double.parseDouble(args[1]);
         y = Double.parseDouble(args[2]);
-        if(args.length>3){
-            if(args[3] == "NORESET"){
-            head.moveTo(x,y,false);
-            }
-         }
-            else{
              head.moveTo(x,y);   
-        
-       
-        }
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
         }
